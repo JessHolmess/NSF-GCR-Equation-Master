@@ -1,0 +1,288 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\setlength{\parindent}{0pt}
+\usepackage[a4paper, total={6.5in, 10.2in}]{geometry}
+
+
+\usepackage{lscape}
+\usepackage{mathtools}
+
+\usepackage{amsmath}
+\usepackage{amssymb} 
+\usepackage{geometry}
+
+%Scientific notation print format
+\usepackage{siunitx}
+
+
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage[dvipsnames]{xcolor}
+
+
+\usepackage{titlesec}
+\titleformat*{\section}{\large\bfseries}
+\titleformat*{\subsection}{\normalsize\bfseries}
+
+\usepackage{array, makecell} %tabular formatting
+
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+
+\begin{document}
+
+\newgeometry{right=1cm, top=1cm, left=1cm, bottom=2cm}
+\section*{NSF GCR Governing Equations - Master Document}
+
+\thinmuskip=8mu
+\medmuskip=3mu
+\thickmuskip=12mu plus 12mu
+ 
+\begin{align}
+    \textrm{For } \Psi &= V_{\textrm{max}} \: \frac{N}{K_N + N} \: \frac{log((K_I + I_0)/K_I)}{K_{h}}, \\[10pt]
+    %uninfected Phytoplankton
+    \frac{dP_U}{dt} &= \underbrace{\vphantom{\frac{g Z}{K_P}} (P_U + \mu_u P_I) \Psi}_{\textrm{growth}} 
+    -  \; P_U \: \Biggl[ \;\underbrace{\frac{g Z}{K_P}}_{\mathclap{\textrm{grazing}}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \lambda_P}_{\mathclap{\textrm{mortality}}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} (1 - \nu_x) \phi \mu_s V_E }_{\textrm{adsorption}}
+    + {\color{blue} \underbrace{\vphantom{\frac{g Z}{K_P}} \omega}_{\textrm{entrain}}} \;\Biggr] \\[15pt]
+    %
+    %Infected Phytoplankton
+    \frac{dP_I}{dt} &= \underbrace{  (1 - \mu_u) P_I \Psi \biggr. }_{\textrm{growth}} 
+    + \underbrace{ \biggl. (1 - \nu_x) \phi \mu_s P_U V_E }_{\textrm{adsorption}} 
+    - \; P_I \: \Biggl[\; \underbrace{\vphantom{\frac{g Z}{K_P}} \frac{g Z}{K_P}}_{\mathclap{\textrm{grazing}}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \lambda_P}_{\mathclap{\textrm{mortality}}} \;
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_{i}  \mu_V}_{\mathclap{\textrm{NT recycling}}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_i \delta}_{\textrm{lysis}} 
+    + {\color{blue}\underbrace{\vphantom{\frac{g Z}{K_P}} \omega}_{\textrm{entrain}}} \; \Biggr] \\[15pt]
+    %
+    %Zooplankton
+    \frac{dZ}{dt} &= Z \: \Biggl[\; \underbrace{ \gamma_Z \frac{g (P+V_I)}{K_P} }_{\textrm{assimilation}} 
+    - \underbrace{\vphantom{\gamma_Z \frac{g (P+V_I)}{K_P}} (\lambda_Z + \hat{\lambda}_Z Z)}_{\textrm{mortality}} 
+    - {\color{blue}\underbrace{\vphantom{\gamma_Z \frac{g (P+V_I)}{K_P}} \omega}_{\textrm{entrain}}} \;\Biggr]\\[15pt]
+    %
+    %Intracellular viruses
+    \frac{dV_I}{dt} &= \underbrace{\vphantom{\frac{g Z}{K_P}} \textcolor{Plum}{\frac{\beta}{\alpha}} \nu_{i} ( \mu_V + \mu_V' ) P_I}_{\textrm{growth}} + \underbrace{\vphantom{\frac{g Z}{K_P}} \textcolor{Plum}{\frac{\beta}{\alpha}} \nu_x \phi \mu_s P_U V_E}_{\textrm{adsorption}} 
+    - \; V_I \: \Biggl[\; \underbrace{\frac{g Z}{K_P}}_{\textrm{grazing}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_i \delta }_{\textrm{lysis}}
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \lambda_P }_{\mathclap{\textrm{host mort}}} 
+    + {\color{blue}\underbrace{\vphantom{\frac{g Z}{K_P}} \omega }_{\textrm{entrain}}} \; \Biggr] \\[15pt]
+    %
+    %Extracellular viruses
+    \frac{dV_E}{dt} &= \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_i \delta V_I}_{\text{lysis}} + \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_r V_I \lambda_P }_{\mathclap{\text{host mortality}}}
+    - \underbrace{\vphantom{\frac{g Z}{K_P}} \textcolor{Plum}{\frac{\beta}{\alpha}} \nu_x \: \phi \: \mu_s \: P_U \: V_E}_{\text{adsorption}}
+    - \underbrace{\vphantom{\frac{g Z}{K_P}} \lambda_E V_E}_{\mathclap{\text{mortality}}} 
+    - {\color{blue}\underbrace{\vphantom{\frac{g Z}{K_P}} \omega V_E}_{\text{entrain}}} \\[15pt]
+    %
+    %Newly formed organic nitrogen
+    \frac{dN_n}{dt} &= - \underbrace{\frac{N_n}{N} \: (P_U + P_I) \: \Psi}_{\text{depletion}}
+    - \underbrace{\frac{N_n}{N} \textcolor{Plum}{\frac{\beta}{\alpha}} \: \nu_i \: P_I  \: \mu_V'}_{\mathclap{\text{intracellular processes}}} 
+    - \; {\color{blue} \underbrace{\vphantom{\frac{N_n}{N}} \omega(N_n-N_{d})}_{\text{entrain}}} \\[15pt]
+    %
+    %Recycled inorganic nitrogen
+    \frac{dN_r}{dt} &=  - \underbrace{\vphantom{\frac{g Z}{K_P}} \frac{N_r}{N} (P_U +  P_I) \: \Psi}_{\text{depletion}}
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_i P_I \biggl(\textcolor{Plum}{\biggl(1 -  \frac{\beta}{\alpha} \biggr)} \mu_V -  \frac{N_r}{N} \textcolor{Plum}{\frac{\beta}{\alpha}} \mu_V' \biggr)}_{\text{intracellular processes}} \\[10pt] 
+    %
+    &+ \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_P \biggl[ \lambda_P (P + (1- \mu_r) V_I) \biggr] + \lambda_E V_E}_{\text{mort-remin}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_{\delta} \: \nu_i \: \delta \: P_I  }_{\text{lysis-remin}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_g \biggl[(1 -  \gamma_Z) \frac{g Z (P+V_I)}{K_P} \biggr]}_{\text{sloppy-remin}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_Z(\lambda_Z Z + \hat{\lambda}_Z Z^{2})}_{\text{Zmort-remin}} 
+    - {\color{blue}\underbrace{\vphantom{\frac{g Z}{K_P}} \omega N_r}_{entrain}} \nonumber \\[10pt]  
+    %
+    & {\color{red} + \underbrace{\vphantom{\frac{g Z}{K_P}} (1 - \mu_P) \biggl[ \lambda_P (P +  (1 - \mu_r) V_I) \biggr]}_{\text{mort-export}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} (1 - \mu_{\delta}) \: \nu_i \: \delta \: P_I}_{\text{lysis-export}} + \underbrace{\vphantom{\frac{g Z}{K_P}} (1 - \mu_g) \biggl[ {\color{Bittersweet} S_{z}} (1 -  \gamma_Z) \frac{g Z (P + V_I)}{K_P} \biggr]}_{\text{sloppy-export}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} (1-\mu_Z)(\lambda_Z Z + \hat{\lambda}_Z Z^{2})}_{\text{Zmort-export}}} \nonumber 
+\end{align}
+
+\vspace{20pt}
+\hspace{20pt}
+\begin{minipage}{4in}
+    All parameters are defined in Table \ref{tab:coupled_parameters} below.\vspace{10pt}
+    
+    Terms colored in {\color{Plum} purple} are scaling terms ensuring consistent units between state variables. \vspace{10pt}
+    
+    Terms in {\color{blue} blue} are terms that cause the system to be open. Only entrainment terms are unbalanced and usually set to zero during simulations.\vspace{10pt}
+    
+    Terms in the $N_r$ equation colored {\color{red} red} are additional terms not present in the inspiring formulations but are added to ensure the system is a closed cycle.
+\end{minipage}
+
+
+\newpage
+We add scaling terms to the appropriate growth terms for each state variable to prevent an ecologically unrealistic numerical resurgence of living constituents. The motivation and procedure regarding adding these scaling factors are detailed in the NSF GCR progress report. Below is the governing system of equations including these scaling factors in \textcolor{Bittersweet}{orange}.\\
+
+Similarly to before, let $\displaystyle \Psi = V_{\textrm{max}} \: \frac{N}{K_N + N} \: \frac{log((K_I + I_0)/K_I)}{K_{h}}.$\\
+
+Let the threshold for damping growth be given by $h =$ 1e-8, such that,
+$$S_{pu} = \frac{P_U}{h} , \; S_{pi} = \frac{P_I}{h} , \; S_{z} = \frac{Z}{h}, \; S_{vi} = \frac{V_I}{h} , \; S_{ve} = \frac{V_E}{h}. $$
+
+Note, an arbitrary scaling term, S, for the associated state variable, V, is only implemented when $S \leq h.$ Thus, the following system is only applicable in certain instances but is presented as a visual reference for comparison to the code that implements these factors when appropriate.
+
+\thinmuskip=8mu
+\medmuskip=3mu
+\thickmuskip=12mu plus 12mu
+ 
+\begin{align}
+    %uninfected Phytoplankton
+    \frac{dP_U}{dt} &= \underbrace{\vphantom{\frac{{\color{Bittersweet} S_{z}} g Z}{K_P}} {\color{Bittersweet} S_{pu}} (P_U + {\color{Bittersweet} S_{pi}} \mu_u P_I) \Psi}_{\textrm{growth}} 
+    -  \; P_U \: \Biggl[ \;\underbrace{\frac{{\color{Bittersweet} S_{z}} g Z}{K_P}}_{\mathclap{\textrm{grazing}}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \lambda_P}_{\mathclap{\textrm{mortality}}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} {\color{Bittersweet} S_{pi}} (1 - \nu_x) \phi \mu_s V_E }_{\textrm{adsorption}}
+    + {\color{blue} \underbrace{\vphantom{\frac{g Z}{K_P}} \omega}_{\textrm{entrain}}} \;\Biggr] \\[15pt]
+    %
+    %Infected Phytoplankton
+    \frac{dP_I}{dt} &= {\color{Bittersweet} S_{pi}} \biggl[ \; \underbrace{  (1 - {\color{Bittersweet} S_{pu}} \: \mu_u) P_I \Psi \biggr. }_{\textrm{growth}} 
+    + \underbrace{ \biggl. (1 - \nu_x) \phi \mu_s P_U V_E }_{\textrm{adsorption}} \; \biggr]
+    - \; P_I \: \Biggl[\; \underbrace{\vphantom{\frac{{\color{Bittersweet} S_{z}} g Z}{K_P}} \frac{{\color{Bittersweet} S_{z}} g Z}{K_P}}_{\mathclap{\textrm{grazing}}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \lambda_P}_{\mathclap{\textrm{mortality}}} \;
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_{i}  \mu_V}_{\mathclap{\textrm{NT recycling}}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_i \delta}_{\textrm{lysis}} 
+    + {\color{blue}\underbrace{\vphantom{\frac{g Z}{K_P}} \omega}_{\textrm{entrain}}} \; \Biggr] \\[15pt]
+    %
+    %Zooplankton
+    \frac{dZ}{dt} &= Z \: \Biggl[\; \underbrace{{\color{Bittersweet} S_{z}} \gamma_Z \frac{g (P+V_I)}{K_P} }_{\textrm{assimilation}} 
+    - \underbrace{\vphantom{\gamma_Z \frac{g (P+V_I)}{K_P}} (\lambda_Z + \hat{\lambda}_Z Z)}_{\textrm{mortality}} 
+    - {\color{blue}\underbrace{\vphantom{\gamma_Z \frac{g (P+V_I)}{K_P}} \omega}_{\textrm{entrain}}} \;\Biggr]\\[15pt]
+    %
+    %Intracellular viruses
+    \frac{dV_I}{dt} &= {\color{Bittersweet} S_{vi}} \biggl[\; \underbrace{\vphantom{\frac{g Z}{K_P}} \textcolor{Plum}{\frac{\beta}{\alpha}} \nu_{i} ( \mu_V + \mu_V' ) P_I}_{\textrm{growth}} + \underbrace{\vphantom{\frac{g Z}{K_P}} \textcolor{Plum}{\frac{\beta}{\alpha}} \nu_x \phi \mu_s P_U V_E}_{\textrm{adsorption}} \;\biggr]
+    - \; V_I \: \Biggl[\; \underbrace{\frac{{\color{Bittersweet} S_{z}} g Z}{K_P}}_{\textrm{grazing}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}}  {\color{Bittersweet} S_{ve}} \nu_i \delta }_{\textrm{lysis}}
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \lambda_P }_{\mathclap{\textrm{host mort}}} 
+    + {\color{blue}\underbrace{\vphantom{\frac{g Z}{K_P}} \omega }_{\textrm{entrain}}} \; \Biggr] \\[15pt]
+    %
+    %Extracellular viruses
+    \frac{dV_E}{dt} &=  {\color{Bittersweet} S_{ve}} \biggl[\; \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_i \delta V_I}_{\text{lysis}} + \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_r V_I \lambda_P }_{\mathclap{\text{host mortality}}} \;\biggr]
+    - \underbrace{\vphantom{\frac{g Z}{K_P}} {\color{Bittersweet} S_{vi}} \textcolor{Plum}{\frac{\beta}{\alpha}} \nu_x \: \phi \: \mu_s \: P_U \: V_E}_{\text{adsorption}}
+    - \underbrace{\vphantom{\frac{g Z}{K_P}} \lambda_E V_E}_{\mathclap{\text{mortality}}} 
+    - {\color{blue}\underbrace{\vphantom{\frac{g Z}{K_P}} \omega V_E}_{\text{entrain}}} \\[15pt]
+    %
+    %Newly formed organic nitrogen
+    \frac{dN_n}{dt} &= - \underbrace{\frac{N_n}{N} \: ({\color{Bittersweet} S_{pu}} P_U + {\color{Bittersweet} S_{pi}} P_I) \: \Psi}_{\text{depletion}}
+    - \underbrace{{\color{Bittersweet} S_{vi}} \frac{N_n}{N} \textcolor{Plum}{\frac{\beta}{\alpha}} \: \nu_i \: P_I  \: \mu_V'}_{\mathclap{\text{intracellular processes}}} 
+    - \; {\color{blue} \underbrace{\vphantom{\frac{N_n}{N}} \omega(N_n-N_{d})}_{\text{entrain}}} \\[15pt]
+    %
+    %Recycled inorganic nitrogen
+    \frac{dN_r}{dt} &=  - \underbrace{\vphantom{\frac{g Z}{K_P}} \frac{N_r}{N} ({\color{Bittersweet} S_{pu}} P_U + {\color{Bittersweet} S_{pi}} P_I) \: \Psi}_{\text{depletion}}
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \nu_i P_I \biggl(\textcolor{Plum}{\biggl(1 - {\color{Bittersweet} S_{vi}} \frac{\beta}{\alpha} \biggr)} \mu_V - {\color{Bittersweet} S_{vi}} \frac{N_r}{N} \textcolor{Plum}{\frac{\beta}{\alpha}} \mu_V' \biggr)}_{\text{intracellular processes}} \\[10pt] 
+    %
+    &+ \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_P \biggl[ \lambda_P (P + (1- {\color{Bittersweet} S_{ve}}\mu_r) V_I) \biggr] + \lambda_E V_E}_{\text{mort-remin}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_{\delta} \: \nu_i \: \delta \: P_I  }_{\text{lysis-remin}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_g \biggl[ {\color{Bittersweet} S_{z}} (1 -  \gamma_Z) \frac{g Z (P+V_I)}{K_P} \biggr]}_{\text{sloppy-remin}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} \mu_Z(\lambda_Z Z + \hat{\lambda}_Z Z^{2})}_{\text{Zmort-remin}} 
+    - {\color{blue}\underbrace{\vphantom{\frac{g Z}{K_P}} \omega N_r}_{entrain}} \nonumber \\[10pt]  
+    %
+    & {\color{red} + \underbrace{\vphantom{\frac{g Z}{K_P}} (1 - \mu_P) \biggl[ \lambda_P (P +  (1- {\color{Bittersweet} S_{ve}}\mu_r) V_I) \biggr]}_{\text{mort-export}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} (1 - \mu_{\delta}) \: \nu_i \: \delta \: P_I}_{\text{lysis-export}} + \underbrace{\vphantom{\frac{g Z}{K_P}} (1 - \mu_g) \biggl[ {\color{Bittersweet} S_{z}} (1 -  \gamma_Z) \frac{g Z (P + V_I)}{K_P} \biggr]}_{\text{sloppy-export}} 
+    + \underbrace{\vphantom{\frac{g Z}{K_P}} (1-\mu_Z)(\lambda_Z Z + \hat{\lambda}_Z Z^{2})}_{\text{Zmort-export}}} \nonumber 
+\end{align}
+
+
+\begin{table}[H]
+\footnotesize
+\centering\renewcommand\cellalign{lc}
+\setcellgapes{3pt}\makegapedcells
+\vspace{-10pt}
+    \begin{tabular}{||l|l|l|l|l||}\hline
+        \textbf{Variable} & \textbf{Definition} & \textbf{Value} & \textbf{Units} & \makecell{\textbf{Associated Reference} \\(if applicable)} \\ \hline
+        %%%
+        $P_U$ & \makecell{Concentration of uninfected phytoplankton} & & $mmol \cdot \; m^{-3}$ & \\
+        \hline
+        $P_{U}(0)$ & Initial uninfected host concentration & .6 & $mmol \cdot m^{-3}$ & \makecell{\cite{sarmiento_gruber_2006}, \\ Pg. 145} \\
+        \hline
+        $P_I$ & Concentration of infected phytoplankton & & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $P_{I}(0)$ & \makecell{Initial infected host concentration} & $0$ & $mmol \cdot m^{-3}$ & \\        
+        \hline
+        $P$ & $P = P_U + P_I$ & & $mmol \cdot m^{-3}$ &\\
+        \hline
+        $Z$   & Concentration of zooplankton & & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $V_I$ & \makecell{Concentration of intracellular viruses \\ (accounts for both NT recycling and \\ \textit{de novo} NT synthesis within host)} & & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $V_{I}(0)$ & Initial intracellular virus concentration & $0$ & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $V_E$ & Concentration of extracellular viruses & & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $V_{E}(0)$ & Initial free/extracellular virus concentration & $\num{2.88e-4}$ & $mmol \cdot m^{-3}$ & \makecell{Derivation of estimation \\ in Progress Report}\\
+        \hline
+        $N_n$ & Concentration of nitrate & & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $N_r$ & \makecell{Concentration of recycled nitrogen sources \\ (DON \& Ammonium)} & & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $N$ & $N = N_n + N_r$ & & & \\
+        \hline
+        $V_{max}$ & Maximum phytoplankton growth rate & 1.4 & day$^{-1}$ & \cite{sarmiento_gruber_2006}\\
+        \hline
+        $\gamma_{Z}$ & Growth rate / Assimilation frequency & .4 & & \cite{sarmiento_gruber_2006}\\
+        \hline
+        $\phi$ & Viral adsorption rate & \makecell{$\phi = \beta \; \phi'$ \\ $\approx 6889.76$} & \large{$\frac{m^3}{mmol \cdot day}$} & \makecell{Converted from Table S1 \\ \cite{EhV_dyn}} \\
+        \hline
+        $g$ & Maximum specific grazing rate & 1.4 & \textrm{day}$^{-1}$ & \cite{sarmiento_gruber_2006}\\
+        \hline
+        $V_{ind}$ & NT per individual virus & $\num{4e5}$ & NT / ind & \makecell{\cite{EhV_dyn}, \\ Table S1} \\
+        \hline
+        $S_{ind}$ & NT per individual host & $\num{1.42e8}$ & NT/ind & \makecell{\cite{EhV_dyn}, \\ Table S1} \\
+        \hline
+        $\nu_{x}$ & Proportion of nutrients originating from virus & \large{$\frac{V_{ind}}{V_{ind} + S_{ind}}$} & & \cite{EhV_dyn} \\
+        \hline
+        $\nu_i$ & \makecell{Proportion of nutrients held within the $V_I$ population \\ compared to the collective $V_I$ and $P_I$ populations \\ (unit scaling included)} & $\displaystyle \frac{V_I}{\frac{\beta}{\alpha} P_I + V_I}$ & & \\
+        \hline
+        $\lambda_{P}$ & Phytoplankton mortality \& respiration rate & .05 & \textrm{day}$^{-1}$ & \cite{sarmiento_gruber_2006}\\
+        \hline
+        $\lambda_{Z}$ & Linear Zoo mortality \& respiration \& egestion & .12 & $\textrm{day}^{-1}$ & \cite{sarmiento_gruber_2006} \\
+        \hline
+        $\hat{\lambda}_{Z}$ & Quadratic Zoo mortality \& respiration \& egestion & & \large{$\frac{m^3}{mmol \cdot day}$} & \\
+        \hline
+        $\lambda_{E}$ & Extracellular Virus Mortality & & \textrm{day}$^{-1}$ & \\
+        \hline
+        $\delta$ & Host lysis rate & & $\textrm{day}^{-1}$ & \\
+        \hline
+        $\mu_{V}$ & Max host NT recycling rate & $3$ & $\textrm{day}^{-1}$ & \makecell{\cite{EhV_dyn} \\ Fig. 5(a) LD} \\
+        \hline
+        $\mu_{V}'$ & \makecell{Max \textit{de novo} NT synthesis rate \\ w/ subsumed nutrient limitation} & \makecell{$1.6$ \large{$\frac{N}{K_N + N}$}} & $\textrm{day}^{-1}$ & \makecell{\cite{EhV_dyn} \\ Fig. 5(b) LD} \\
+        \hline
+        $\mu_u$ & \makecell{Proportion of uninfected (potentially immune) \\ offspring originating from infected hosts} & & &\\
+        \hline 
+        $\mu_r$ & \makecell{Proportion of $V_I$ that integrate back into \\ $V_E$ after host death (unrelated to lysis)} & & &\\
+        \hline
+        $\mu_s$ & \makecell{Proportion of uninfected hosts \\ susceptible to infection} & & &\\
+        \hline 
+        $\mu_{P}$ & Remineralization fraction due to host mortality & & &\\
+        \hline 
+        $\mu_{\delta}$ & Remineralization fraction due to host lysis & & &\\
+        \hline 
+        $\mu_{g}$ & Remineralization fraction due to sloppy grazer eating & & &\\
+        \hline 
+        $\mu_{Z}$ & Remineralization fraction due to grazer mortality & & &\\
+    \end{tabular}
+\end{table}
+
+\begin{table}[H]
+\footnotesize
+\centering\renewcommand\cellalign{lc}
+\setcellgapes{3pt}\makegapedcells
+\vspace{-10pt}
+    \begin{tabular}{||l|l|l|l|l||}
+        $K_{N}$ & Half-saturation constant for nutrient limitation & $.1$ & $mmol \cdot m^{-3}$ & \cite{sarmiento_gruber_2006}\\
+        \hline
+        $K_{I}$ & Half-saturation constant for light limitation & & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $K_{h}$ & Half-saturation associated with light limitation & & $mmol \cdot m^{-3}$ & \\
+        \hline
+        $ K_{P} \qquad $ & Half-saturation constant for grazing on P & $\qquad 2.8 \qquad$ & $mmol \cdot m^{-3}$ & \cite{sarmiento_gruber_2006}\\
+        \hline
+        $I_0$ & Compensation irradiance & & &\\
+        \hline
+        $\omega$ & Entrainment term & & &\\ 
+        \hline
+    \end{tabular}
+    \caption{Parameters in the coupled model.}
+    \label{tab:coupled_parameters}
+\end{table}
+
+\restoregeometry
+
+\bibliographystyle{apalike}
+\bibliography{bib}
+\end{document}
